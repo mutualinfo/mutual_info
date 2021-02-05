@@ -4,6 +4,8 @@ Putting [GaelVaroquaux's mutual_info gist](https://gist.github.com/GaelVaroquaux
 
 See `Makefile` for example ops.
 
+Do not pin packages for now. Let's surf latest and find out when things break.
+
 ## Install
 
     python setup.py install

@@ -5,6 +5,8 @@ setup(name='mutual_info',
       description="Putting GaelVaraquaux's gist in a repo. Mutual information calculation utils.",
       install_requires=[
           'numpy',
+          'scipy',
+          'sklearn',
       ],
       packages=['mutual_info'],
       )
