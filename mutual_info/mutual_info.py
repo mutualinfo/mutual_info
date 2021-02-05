@@ -101,6 +101,11 @@ def mutual_information(variables, k=1):
         raise AttributeError(
                 "Mutual information must involve at least 2 variables")
     all_vars = np.hstack(variables)
+    # check that mi(X, X) = entropy(X)
+    check = np.unique(all_vars, axis=1)
+    if all_vars.shape[1] != check.shape[1]:
+        print(f'WARNING: dropping {all_vars.shape[1] - check.shape[1]} variables as the samples are identical!')
+        all_vars = check
     return (sum([entropy(X, k=k) for X in variables])
             - entropy(all_vars, k=k))
 
