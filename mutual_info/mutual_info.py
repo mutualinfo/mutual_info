@@ -1,11 +1,12 @@
-'''
+"""
 Non-parametric computation of entropy and mutual-information
 
 Adapted by G Varoquaux for code created by R Brette, itself
 from several papers (see in the code).
 
 These computations rely on nearest-neighbor statistics
-'''
+"""
+
 import numpy as np
 from numpy import pi
 from scipy import ndimage
@@ -13,19 +14,19 @@ from scipy.linalg import det
 from scipy.special import gamma, psi
 from sklearn.neighbors import NearestNeighbors
 
-__all__ = ['entropy', 'mutual_information', 'entropy_gaussian']
+__all__ = ["entropy", "mutual_information", "entropy_gaussian"]
 
 EPS = np.finfo(float).eps
 
 
 def nearest_distances(X, k=1):
-    '''
+    """
     X = array(N,M)
     N = number of points
     M = number of dimensions
 
     returns the distance to the kth nearest neighbor for every point in X
-    '''
+    """
     knn = NearestNeighbors(n_neighbors=k + 1)
     knn.fit(X)
     d, _ = knn.kneighbors(X)  # the first nearest neighbor is itself
@@ -33,18 +34,18 @@ def nearest_distances(X, k=1):
 
 
 def entropy_gaussian(C):
-    '''
+    """
     Entropy of a gaussian variable with covariance matrix C
-    '''
+    """
     if np.isscalar(C):  # C is the variance
-        return .5*(1 + np.log(2*pi)) + .5*np.log(C)
+        return 0.5 * (1 + np.log(2 * pi)) + 0.5 * np.log(C)
     else:
         n = C.shape[0]  # dimension
-        return .5*n*(1 + np.log(2*pi)) + .5*np.log(abs(det(C)))
+        return 0.5 * n * (1 + np.log(2 * pi)) + 0.5 * np.log(abs(det(C)))
 
 
 def entropy(X, k=1):
-    ''' Returns the entropy of the X.
+    """Returns the entropy of the X.
 
     Parameters
     ===========
@@ -65,25 +66,24 @@ def entropy(X, k=1):
     and:
     Kraskov A, Stogbauer H, Grassberger P. (2004). Estimating mutual
     information. Phys Rev E 69(6 Pt 2):066138.
-    '''
+    """
 
     # Distance to kth nearest neighbor
     r = nearest_distances(X, k)  # squared distances
     n, d = X.shape
-    volume_unit_ball = (pi**(.5*d)) / gamma(.5*d + 1)
-    '''
+    volume_unit_ball = (pi ** (0.5 * d)) / gamma(0.5 * d + 1)
+    """
     F. Perez-Cruz, (2008). Estimation of Information Theoretic Measures
     for Continuous Random Variables. Advances in Neural Information
     Processing Systems 21 (NIPS). Vancouver (Canada), December.
 
     return d*mean(log(r))+log(volume_unit_ball)+log(n-1)-log(k)
-    '''
-    return (d*np.mean(np.log(r + np.finfo(X.dtype).eps))
-            + np.log(volume_unit_ball) + psi(n) - psi(k))
+    """
+    return d * np.mean(np.log(r + np.finfo(X.dtype).eps)) + np.log(volume_unit_ball) + psi(n) - psi(k)
 
 
 def mutual_information(variables, k=1):
-    '''
+    """
     Returns the mutual information between any number of variables.
     Each variable is a matrix X = array(n_samples, n_features)
     where
@@ -94,18 +94,16 @@ def mutual_information(variables, k=1):
       k = number of nearest neighbors for density estimation
 
     Example: mutual_information((X, Y)), mutual_information((X, Y, Z), k=5)
-    '''
+    """
     if len(variables) < 2:
-        raise AttributeError(
-            "Mutual information must involve at least 2 variables")
+        raise AttributeError("Mutual information must involve at least 2 variables")
     all_vars = np.hstack(variables)
     # check that mi(X, X) = entropy(X)
     check = np.unique(all_vars, axis=1)
     if all_vars.shape[1] != check.shape[1]:
-        print(f'WARNING: dropping {all_vars.shape[1] - check.shape[1]} variables as the samples are identical!')
+        print(f"WARNING: dropping {all_vars.shape[1] - check.shape[1]} variables as the samples are identical!")
         all_vars = check
-    return (sum([entropy(X, k=k) for X in variables])
-            - entropy(all_vars, k=k))
+    return sum([entropy(X, k=k) for X in variables]) - entropy(all_vars, k=k)
 
 
 def mutual_information_2d(x, y, sigma=1, normalized=False):
@@ -135,8 +133,7 @@ def mutual_information_2d(x, y, sigma=1, normalized=False):
     jh = np.histogram2d(x, y, bins=bins)[0]
 
     # smooth the jh with a gaussian filter of given sigma
-    ndimage.gaussian_filter(jh, sigma=sigma, mode='constant',
-                            output=jh)
+    ndimage.gaussian_filter(jh, sigma=sigma, mode="constant", output=jh)
 
     # compute marginal histograms
     jh = jh + EPS
@@ -150,10 +147,8 @@ def mutual_information_2d(x, y, sigma=1, normalized=False):
     # "A normalized entropy measure of 3-D medical image alignment".
     # in Proc. Medical Imaging 1998, vol. 3338, San Diego, CA, pp. 132-143.
     if normalized:
-        mi = ((np.sum(s1 * np.log(s1)) + np.sum(s2 * np.log(s2)))
-              / np.sum(jh * np.log(jh))) - 1
+        mi = ((np.sum(s1 * np.log(s1)) + np.sum(s2 * np.log(s2))) / np.sum(jh * np.log(jh))) - 1
     else:
-        mi = (np.sum(jh * np.log(jh)) - np.sum(s1 * np.log(s1))
-              - np.sum(s2 * np.log(s2)))
+        mi = np.sum(jh * np.log(jh)) - np.sum(s1 * np.log(s1)) - np.sum(s2 * np.log(s2))
 
     return mi

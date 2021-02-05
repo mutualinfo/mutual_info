@@ -1,7 +1,6 @@
 import numpy as np
 
-from ..mutual_info import (entropy, entropy_gaussian, mutual_information,
-                           mutual_information_2d)
+from ..mutual_info import entropy, entropy_gaussian, mutual_information, mutual_information_2d
 
 
 def test_entropy():
@@ -11,7 +10,7 @@ def test_entropy():
     rng = np.random.RandomState(0)
     n = 50000
     d = 3
-    P = np.array([[1, 0, 0], [0, 1, .5], [0, 0, 1]])
+    P = np.array([[1, 0, 0], [0, 1, 0.5], [0, 0, 1]])
     C = np.dot(P, P.T)
     Y = rng.randn(d, n)
     X = np.dot(P, Y)
@@ -20,7 +19,7 @@ def test_entropy():
     # Our estimated entropy should always be less that the actual one
     # (entropy estimation undershoots) but not too much
     np.testing.assert_array_less(H_est, H_th)
-    np.testing.assert_array_less(.9*H_th, H_est)
+    np.testing.assert_array_less(0.9 * H_th, H_est)
 
 
 def test_mutual_information():
@@ -28,7 +27,7 @@ def test_mutual_information():
     # Entropy of a 2-dimensional gaussian variable
     n = 50000
     rng = np.random.RandomState(0)
-    #P = np.random.randn(2, 2)
+    # P = np.random.randn(2, 2)
     P = np.array([[1, 0], [0.5, 1]])
     C = np.dot(P, P.T)
     U = rng.randn(2, n)
@@ -39,15 +38,12 @@ def test_mutual_information():
     Y = Y.reshape(len(Y), 1)
     # in bits
     MI_est = mutual_information((X, Y), k=5)
-    MI_th = (entropy_gaussian(C[0, 0])
-             + entropy_gaussian(C[1, 1])
-             - entropy_gaussian(C)
-             )
+    MI_th = entropy_gaussian(C[0, 0]) + entropy_gaussian(C[1, 1]) - entropy_gaussian(C)
     # Our estimator should undershoot once again: it will undershoot more
     # for the 2D estimation that for the 1D estimation
     print((MI_est, MI_th))
     np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est + .3)
+    np.testing.assert_array_less(MI_th, MI_est + 0.3)
 
 
 def test_degenerate():
@@ -57,8 +53,7 @@ def test_degenerate():
     x = rng.randn(50000)
     X = np.c_[x, x]
     assert np.isfinite(entropy(X))
-    assert np.isfinite(mutual_information((x[:, np.newaxis],
-                                           x[:,  np.newaxis])))
+    assert np.isfinite(mutual_information((x[:, np.newaxis], x[:, np.newaxis])))
     assert 2.9 < mutual_information_2d(x, x) < 3.1
 
 
@@ -67,8 +62,8 @@ def test_mutual_information_2d():
     # Entropy of a 2-dimensional gaussian variable
     n = 50000
     rng = np.random.RandomState(0)
-    #P = np.random.randn(2, 2)
-    P = np.array([[1, 0], [.9, .1]])
+    # P = np.random.randn(2, 2)
+    P = np.array([[1, 0], [0.9, 0.1]])
     C = np.dot(P, P.T)
     U = rng.randn(2, n)
     Z = np.dot(P, U).T
@@ -78,18 +73,15 @@ def test_mutual_information_2d():
     Y = Y.reshape(len(Y), 1)
     # in bits
     MI_est = mutual_information_2d(X.ravel(), Y.ravel())
-    MI_th = (entropy_gaussian(C[0, 0])
-             + entropy_gaussian(C[1, 1])
-             - entropy_gaussian(C)
-             )
+    MI_th = entropy_gaussian(C[0, 0]) + entropy_gaussian(C[1, 1]) - entropy_gaussian(C)
     print((MI_est, MI_th))
     # Our estimator should undershoot once again: it will undershoot more
     # for the 2D estimation that for the 1D estimation
     np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est + .2)
+    np.testing.assert_array_less(MI_th, MI_est + 0.2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Run our tests
     test_entropy()
     test_mutual_information()
