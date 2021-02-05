@@ -11,4 +11,4 @@ develop:
 	python setup.py develop
 
 autoformat:
-	find . -name '*.py' | xargs ./scripts/ap300.bash
+	./scripts/ap300.bash $$(find . -name '*.py')

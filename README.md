@@ -16,5 +16,5 @@ Do not pin packages for now. Let's surf latest and find out when things break.
 
 ## TODO
 
-* CID
 * incorporate fixes from @thismartian
+* pypi
