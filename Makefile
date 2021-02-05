@@ -9,3 +9,6 @@ install:
 
 develop:
 	python setup.py develop
+
+autoformat:
+	find . -name '*.py' | xargs ./scripts/ap300.bash

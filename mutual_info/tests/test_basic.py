@@ -1,5 +1,8 @@
 import numpy as np
-from ..mutual_info import entropy, mutual_information, entropy_gaussian, mutual_information_2d
+
+from ..mutual_info import (entropy, entropy_gaussian, mutual_information,
+                           mutual_information_2d)
+
 
 def test_entropy():
     # Testing against correlated Gaussian variables
@@ -39,12 +42,12 @@ def test_mutual_information():
     MI_th = (entropy_gaussian(C[0, 0])
              + entropy_gaussian(C[1, 1])
              - entropy_gaussian(C)
-            )
+             )
     # Our estimator should undershoot once again: it will undershoot more
     # for the 2D estimation that for the 1D estimation
     print((MI_est, MI_th))
     np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est  + .3)
+    np.testing.assert_array_less(MI_th, MI_est + .3)
 
 
 def test_degenerate():
@@ -78,12 +81,12 @@ def test_mutual_information_2d():
     MI_th = (entropy_gaussian(C[0, 0])
              + entropy_gaussian(C[1, 1])
              - entropy_gaussian(C)
-            )
+             )
     print((MI_est, MI_th))
     # Our estimator should undershoot once again: it will undershoot more
     # for the 2D estimation that for the 1D estimation
     np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est  + .2)
+    np.testing.assert_array_less(MI_th, MI_est + .2)
 
 
 if __name__ == '__main__':

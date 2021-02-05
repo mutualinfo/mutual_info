@@ -7,15 +7,13 @@ from several papers (see in the code).
 These computations rely on nearest-neighbor statistics
 '''
 import numpy as np
-
-from scipy.special import gamma,psi
+from numpy import pi
 from scipy import ndimage
 from scipy.linalg import det
-from numpy import pi
-
+from scipy.special import gamma, psi
 from sklearn.neighbors import NearestNeighbors
 
-__all__=['entropy', 'mutual_information', 'entropy_gaussian']
+__all__ = ['entropy', 'mutual_information', 'entropy_gaussian']
 
 EPS = np.finfo(float).eps
 
@@ -30,18 +28,18 @@ def nearest_distances(X, k=1):
     '''
     knn = NearestNeighbors(n_neighbors=k + 1)
     knn.fit(X)
-    d, _ = knn.kneighbors(X) # the first nearest neighbor is itself
-    return d[:, -1] # returns the distance to the kth nearest neighbor
+    d, _ = knn.kneighbors(X)  # the first nearest neighbor is itself
+    return d[:, -1]  # returns the distance to the kth nearest neighbor
 
 
 def entropy_gaussian(C):
     '''
     Entropy of a gaussian variable with covariance matrix C
     '''
-    if np.isscalar(C): # C is the variance
+    if np.isscalar(C):  # C is the variance
         return .5*(1 + np.log(2*pi)) + .5*np.log(C)
     else:
-        n = C.shape[0] # dimension
+        n = C.shape[0]  # dimension
         return .5*n*(1 + np.log(2*pi)) + .5*np.log(abs(det(C)))
 
 
@@ -70,7 +68,7 @@ def entropy(X, k=1):
     '''
 
     # Distance to kth nearest neighbor
-    r = nearest_distances(X, k) # squared distances
+    r = nearest_distances(X, k)  # squared distances
     n, d = X.shape
     volume_unit_ball = (pi**(.5*d)) / gamma(.5*d + 1)
     '''
@@ -99,7 +97,7 @@ def mutual_information(variables, k=1):
     '''
     if len(variables) < 2:
         raise AttributeError(
-                "Mutual information must involve at least 2 variables")
+            "Mutual information must involve at least 2 variables")
     all_vars = np.hstack(variables)
     # check that mi(X, X) = entropy(X)
     check = np.unique(all_vars, axis=1)
@@ -138,7 +136,7 @@ def mutual_information_2d(x, y, sigma=1, normalized=False):
 
     # smooth the jh with a gaussian filter of given sigma
     ndimage.gaussian_filter(jh, sigma=sigma, mode='constant',
-                                 output=jh)
+                            output=jh)
 
     # compute marginal histograms
     jh = jh + EPS
@@ -153,12 +151,9 @@ def mutual_information_2d(x, y, sigma=1, normalized=False):
     # in Proc. Medical Imaging 1998, vol. 3338, San Diego, CA, pp. 132-143.
     if normalized:
         mi = ((np.sum(s1 * np.log(s1)) + np.sum(s2 * np.log(s2)))
-                / np.sum(jh * np.log(jh))) - 1
+              / np.sum(jh * np.log(jh))) - 1
     else:
-        mi = ( np.sum(jh * np.log(jh)) - np.sum(s1 * np.log(s1))
-               - np.sum(s2 * np.log(s2)))
+        mi = (np.sum(jh * np.log(jh)) - np.sum(s1 * np.log(s1))
+              - np.sum(s2 * np.log(s2)))
 
     return mi
-
-
-
