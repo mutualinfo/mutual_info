@@ -6,6 +6,7 @@ from several papers (see in the code).
 
 These computations rely on nearest-neighbor statistics
 """
+from functools import lru_cache
 
 import numpy as np
 from numpy import pi
@@ -71,7 +72,7 @@ def entropy(X, k=1):
     # Distance to kth nearest neighbor
     r = nearest_distances(X, k)  # squared distances
     n, d = X.shape
-    volume_unit_ball = (pi ** (0.5 * d)) / gamma(0.5 * d + 1)
+    volume_unit_ball = get_volume_unit_ball(d)
     """
     F. Perez-Cruz, (2008). Estimation of Information Theoretic Measures
     for Continuous Random Variables. Advances in Neural Information
@@ -80,6 +81,14 @@ def entropy(X, k=1):
     return d*mean(log(r))+log(volume_unit_ball)+log(n-1)-log(k)
     """
     return d * np.mean(np.log(r + np.finfo(X.dtype).eps)) + np.log(volume_unit_ball) + psi(n) - psi(k)
+
+
+@lru_cache
+def get_volume_unit_ball(d):
+    volume_unit_ball = 1
+    for dim in range(1, d + 1):
+        volume_unit_ball = volume_unit_ball * (pi ** (dim / 2) / gamma(dim / 2 + 1) / 2 ** dim)
+    return volume_unit_ball
 
 
 def mutual_information(variables, k=1):
