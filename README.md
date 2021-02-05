@@ -9,3 +9,9 @@ Putting [GaelVaroquaux's mutual_info gist](https://gist.github.com/GaelVaroquaux
 ## Develop install
 
     python setup.py develop
+
+## TODO
+
+* document run tests
+* CID
+* incorporate fixes from @thismartian
