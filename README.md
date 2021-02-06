@@ -24,6 +24,10 @@ Do not pin packages for now. Let's surf latest and find out when things break.
 
     python setup.py develop
 
+## Tests
+
+    make test
+
 ## TODO
 
 * incorporate fixes from @thismartian (see thismartian branch)
