@@ -80,7 +80,7 @@ def entropy(X, k=1):
 
     return d*mean(log(r))+log(volume_unit_ball)+log(n-1)-log(k)
     """
-    return d * np.mean(np.log(r + np.finfo(X.dtype).eps)) + np.log(volume_unit_ball) + psi(n) - psi(k)
+    return d * np.mean(np.log(2 * r + np.finfo(X.dtype).eps)) + np.log(volume_unit_ball) + psi(n) - psi(k)
 
 
 @lru_cache
