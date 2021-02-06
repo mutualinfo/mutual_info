@@ -1,5 +1,7 @@
 # Mutual Information
 
+<img src="img/coots.jpg" alt="reeeeeedme" width="400px">
+
 Estimating entropy and mutual information with scikit-learn.
 
 Putting [GaelVaroquaux's mutual_info gist](https://gist.github.com/GaelVaroquaux/ead9898bd3c973c40429) in a project until it has a better home.
