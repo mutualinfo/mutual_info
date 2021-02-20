@@ -13,7 +13,7 @@ setup(
     install_requires=[
         "numpy",
         "scipy",
-        "sklearn",
+        "scikit-learn",
     ],
     packages=["mutual_info"],
 )
