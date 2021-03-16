@@ -6,6 +6,7 @@ from several papers (see in the code).
 
 These computations rely on nearest-neighbor statistics
 """
+from functools import lru_cache
 
 import numpy as np
 from numpy import pi
