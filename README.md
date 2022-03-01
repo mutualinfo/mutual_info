@@ -47,6 +47,7 @@ Do not pin packages for now. Let's surf latest and find out when things break.
 * equation 3 and 9 from 2008 nips paper
 * tests
 * clear documentation and reminders about mutual information and the problems with continuous r.v.s
+* compare to sklearn _mutual_info.py as per https://github.com/mutualinfo/mutual_info/issues/2
 
 ## Origins
 
