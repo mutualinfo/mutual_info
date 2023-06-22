@@ -9,7 +9,7 @@ Estimating [differential entropy](https://en.wikipedia.org/wiki/Differential_ent
 * It is not invariant under change of variables, and is therefore most useful with dimensionless variables.
 * It can be negative.
 
-See also the [limiting density of discrete points](https://en.wikipedia.org/wiki/Limiting_density_of_discrete_points) as to why the original description of differential entropy is not even dimensinoally correct.
+See also the [limiting density of discrete points](https://en.wikipedia.org/wiki/Limiting_density_of_discrete_points) as to why the original description of differential entropy is not even dimensionally correct.
 
 
 ## Mutual Information
