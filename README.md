@@ -4,6 +4,10 @@
 
 Estimating [differential entropy](https://en.wikipedia.org/wiki/Differential_entropy) and mutual information for continuous random variables.
 
+Perhaps see:
+
+* https://github.com/moldyn/NorMI (https://arxiv.org/abs/2405.04980)
+
 ## :warning: A reminder about Differential Entropy
 
 * It is not invariant under change of variables, and is therefore most useful with dimensionless variables.
