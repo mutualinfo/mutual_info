@@ -10,7 +10,7 @@ Perhaps see:
 
 ## :warning: A reminder about Differential Entropy
 
-* It is not invariant under change of variables, and is therefore most useful with dimensionless variables.
+* It is not invariant under monotonic changes of variables (on the individual r.v.s.), and is therefore most useful with dimensionless variables. The equivalent invariance for discrete is bijective (relabelling) transformations of the individual r.v.s.
 * It can be negative.
 
 See also the [limiting density of discrete points](https://en.wikipedia.org/wiki/Limiting_density_of_discrete_points) as to why the original description of differential entropy is not even dimensionally correct.
